@@ -1,15 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Prospector : MonoBehaviour {
+	public static Prospector S;
+	public Deck deck;
+	public TextAsset deckXML;
 
-	// Use this for initialization
-	void Start () {
-	
+
+	void Awake()
+	{
+		S=this;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+	void Start()
+	{
+		deck = GetComponent<Deck>();
+		deck.initDeck(deckXML.text);
 	}
 }
