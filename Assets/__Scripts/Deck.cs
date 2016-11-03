@@ -225,4 +225,20 @@ public class Deck : MonoBehaviour {
 		}
 		return null;
 	}
+
+
+
+	public static void shuffle(ref List<Card> oCards)
+	{
+		List<Card> tCards = new List<Card>();
+		int ndx;
+		tCards = new List<Card>();
+		while (oCards.Count > 0)
+		{
+			ndx = Random.Range(0,oCards.Count);
+			tCards.Add (oCards[ndx]);
+			oCards.RemoveAt(ndx);
+		}
+		oCards = tCards;
+	}
 }

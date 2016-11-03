@@ -16,5 +16,6 @@ public class Prospector : MonoBehaviour {
 	{
 		deck = GetComponent<Deck>();
 		deck.initDeck(deckXML.text);
+		Deck.shuffle(ref deck.cards);
 	}
 }
