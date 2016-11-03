@@ -6,6 +6,8 @@ public class Prospector : MonoBehaviour {
 	public static Prospector S;
 	public Deck deck;
 	public TextAsset deckXML;
+	public Layout layout;
+	public TextAsset layoutXML;
 
 
 	void Awake()
@@ -17,5 +19,8 @@ public class Prospector : MonoBehaviour {
 		deck = GetComponent<Deck>();
 		deck.initDeck(deckXML.text);
 		Deck.shuffle(ref deck.cards);
+
+		layout = GetComponent<Layout>();
+		layout.readLayout(layoutXML.text);
 	}
 }
