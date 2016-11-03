@@ -151,8 +151,39 @@ public class Deck : MonoBehaviour {
 			card.def = getCardDefinitionByRank(card.rank);
 			foreach(Decorator deco in decorators)
 			{
+				foreach(Decorator pip in card.def.pips)
+				{
+					tGO = Instantiate(prefabSprite) as GameObject;
+					tGO.transform.parent = cgo.transform;
+					tGO.transform.localPosition = pip.loc;
+					if (pip.flip)
+					{
+						tGO.transform.rotation = Quaternion.Euler(0,0,180);
+					}
+					if (pip.scale != 1)
+					{
+						tGO.transform.localScale = Vector3.one*pip.scale;
+					}
+					tGO.name = "pip";
+					tSR = tGO.GetComponent<SpriteRenderer>();
+					tSR.sprite = dictSuits[card.suit];
+					tSR.sortingOrder = 1;
+					card.pipGOs.Add(tGO);
+				}
+				if (card.def.face != "")
+				{
+					tGO = Instantiate (prefabSprite) as GameObject;
+					tSR = tGO.GetComponent<SpriteRenderer>();
+					tS = getFace(card.def.face+card.suit);
+					tSR.sprite = tS;
+					tSR.sortingOrder = 1;
+					tGO.transform.parent = card.transform;
+					tGO.transform.localPosition = Vector3.zero;
+					tGO.name = "face";
+				}
 				if(deco.type == "suit")
-				{tGO = Instantiate(prefabSprite) as GameObject;
+				{
+					tGO = Instantiate(prefabSprite) as GameObject;
 					tSR = tGO.GetComponent<SpriteRenderer>();
 					tSR.sprite = dictSuits[card.suit];
 				}
@@ -169,12 +200,29 @@ public class Deck : MonoBehaviour {
 				tGO.transform.localPosition = deco.loc;
 				if (deco.flip)
 				{
-					tGO.transform.localScale = Vector3.one *deco.scale;
+					tGO.transform.rotation = Quaternion.Euler(0,0,180);
+				}
+				if (deco.scale !=1)
+				{
+					tGO.transform.localScale = Vector3.one*deco.scale;
 				}
 				tGO.name = deco.type;
 				card.decoGOs.Add(tGO);
 			}
 			cards.Add(card);
 		}
+	}
+
+
+	public Sprite getFace(string faceS)
+	{
+		foreach(Sprite tS in faceSprites)
+		{
+			if (tS.name == faceS)
+			{
+				return tS;
+			}
+		}
+		return null;
 	}
 }
