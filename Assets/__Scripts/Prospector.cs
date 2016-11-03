@@ -8,6 +8,7 @@ public class Prospector : MonoBehaviour {
 	public TextAsset deckXML;
 	public Layout layout;
 	public TextAsset layoutXML;
+	public List<CardProspector> drawPile;
 
 
 	void Awake()
@@ -22,5 +23,19 @@ public class Prospector : MonoBehaviour {
 
 		layout = GetComponent<Layout>();
 		layout.readLayout(layoutXML.text);
+		drawPile = convertListCardsToListCardProspectors(deck.cards);
+	}
+
+
+	List<CardProspector> convertListCardsToListCardProspectors(List<Card> lCD)
+	{
+		List<CardProspector> lCP = new List<CardProspector>();
+		CardProspector tCP;
+		foreach(Card tCD in lCD)
+		{
+			tCP = tCD as CardProspector;
+			lCP.Add(tCP);
+		}
+		return lCP;
 	}
 }
