@@ -32,7 +32,20 @@ public class Deck : MonoBehaviour {
 
 	public void initDeck(string deckXMLText)
 	{
+		if (GameObject.Find("_Deck") == null)
+		{
+			GameObject anchorGO = new GameObject("Deck");
+			deckAnchor = anchorGO.transform;
+		}
+		dictSuits = new Dictionary<string, Sprite>()
+		{
+			{"C",suitClub},
+			{"D",suitDiamond},
+			{"H",suitHeart},
+			{"S",suitSpade}
+		};
 		readDeck(deckXMLText);
+		makeCards();
 	}
 
 	public void readDeck(string deckXMLText)
@@ -90,6 +103,78 @@ public class Deck : MonoBehaviour {
 				cDef.face = xCardDefs[i].att ("face");
 			}
 			cardDefs.Add(cDef);
+		}
+	}
+
+	public CardDefinition getCardDefinitionByRank(int rnk)
+	{
+		foreach(CardDefinition cd in cardDefs)
+		{
+			if (cd.rank == rnk)
+			{
+				return cd;
+			}
+		}
+		return null;
+	}
+
+	public void makeCards()
+	{
+		cardNames = new List<string>();
+		string[] letters = new string[] {"C","D","H","S"};
+		foreach(string s in letters)
+		{
+			for(int i=0;i < 13; i++)
+			{
+				cardNames.Add(s+(i+1));
+			}
+		}
+		cards = new List<Card>();
+		Sprite tS = null;
+		GameObject tGO = null;
+		SpriteRenderer tSR = null;
+
+		for (int i=0; i < cardNames.Count; i++)
+		{
+			GameObject cgo = Instantiate(prefabCard) as GameObject;
+			cgo.transform.parent = deckAnchor;
+			Card card = cgo.GetComponent<Card>();
+			cgo.transform.localPosition = new Vector3((i%13)*3, i/13*4,0);
+			card.name = cardNames[i];
+			card.suit = card.name[0].ToString();
+			card.rank = int.Parse(card.name.Substring(1));
+			if (card.suit == "D" || card.suit == "H")
+			{
+				card.colS = "Red";
+				card.color = Color.red;
+			}
+			card.def = getCardDefinitionByRank(card.rank);
+			foreach(Decorator deco in decorators)
+			{
+				if(deco.type == "suit")
+				{tGO = Instantiate(prefabSprite) as GameObject;
+					tSR = tGO.GetComponent<SpriteRenderer>();
+					tSR.sprite = dictSuits[card.suit];
+				}
+				else
+				{
+					tGO = Instantiate(prefabSprite) as GameObject;
+					tSR = tGO.GetComponent<SpriteRenderer>();
+					tS = rankSprites[card.rank];
+					tSR.sprite = tS;
+					tSR.color = card.color;
+				}
+				tSR.sortingOrder = 1;
+				tGO.transform.parent = cgo.transform;
+				tGO.transform.localPosition = deco.loc;
+				if (deco.flip)
+				{
+					tGO.transform.localScale = Vector3.one *deco.scale;
+				}
+				tGO.name = deco.type;
+				card.decoGOs.Add(tGO);
+			}
+			cards.Add(card);
 		}
 	}
 }
