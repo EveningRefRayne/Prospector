@@ -12,6 +12,13 @@ public class Card : MonoBehaviour {
 	public List<GameObject> pipGOs = new List<GameObject>();
 	public GameObject back;
 	public CardDefinition def;
+	public SpriteRenderer[] spriteRenderers;
+
+
+	void Start()
+	{
+		setSortOrder(0);
+	}
 
 
 	public bool faceUp
@@ -26,6 +33,44 @@ public class Card : MonoBehaviour {
 		}
 	}
 
+	public void populateSpriteRenderers()
+	{
+		if (spriteRenderers == null || spriteRenderers.Length == 0)
+		{
+			spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+		}
+	}
+
+	public void setSortingLayerName(string tSLN)
+	{
+		populateSpriteRenderers();
+		foreach(SpriteRenderer tSR in spriteRenderers)
+		{
+			tSR.sortingLayerName = tSLN;
+		}
+	}
+	public void setSortOrder (int sOrd)
+	{
+		populateSpriteRenderers();
+		foreach(SpriteRenderer tSR in spriteRenderers)
+		{
+			if (tSR.gameObject == this.gameObject)
+			{
+				tSR.sortingOrder = sOrd;
+				continue;
+			}switch (tSR.gameObject.name)
+			{
+				case "back":
+					tSR.sortingOrder = sOrd+2;
+					break;
+				case "face": //Nothing, apparently, just fall through.
+					default:
+					tSR.sortingOrder = sOrd+1;
+					break;
+			}
+		}
+	}
+		
 
 }
 
