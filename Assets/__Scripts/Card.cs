@@ -73,7 +73,7 @@ public class Card : MonoBehaviour {
 		
 	virtual public void OnMouseUpAsButton()
 	{
-		print (name); //Just a stand in, to be overridden by classes for specific games.
+		//print (name); //Just a stand in, to be overridden by classes for specific games. - Commented out because it's noisy.
 	}
 
 }
