@@ -66,6 +66,8 @@ public class Prospector : MonoBehaviour {
 			cp.setSortingLayerName(tSD.layerName);
 			tableau.Add(cp);
 		}
+		moveToTarget(draw());
+		updateDrawPile();
 	}
 
 
@@ -80,4 +82,62 @@ public class Prospector : MonoBehaviour {
 		}
 		return lCP;
 	}
+
+	public void cardClicked(CardProspector cd)
+	{
+		switch(cd.state)
+		{
+			case CardState.target:
+				break;
+			case CardState.drawpile:
+				moveToDiscard(target);
+				moveToTarget(draw());
+				updateDrawPile();
+				break;
+			case CardState.tableau:
+				//Does the logic to see if the move is valid. Guess I'm writing it later?
+				break;
+		}
+	}
+
+	void moveToDiscard(CardProspector cd)
+	{
+		cd.state = CardState.discard;
+		discardPile.Add(cd);
+		cd.transform.parent = layoutAnchor;
+		cd.transform.localPosition = new Vector3(layout.multiplier.x*layout.discardPile.x,layout.multiplier.y*layout.discardPile.y,-layout.discardPile.layerID+0.5f);
+		cd.faceUp = true;
+		cd.setSortingLayerName(layout.discardPile.layerName);
+		cd.setSortOrder(-100+discardPile.Count);
+	}
+	void moveToTarget(CardProspector cd)
+	{
+		if (target !=null)
+			moveToDiscard(target);
+		target = cd;
+		cd.state = CardState.target;
+		cd.transform.parent = layoutAnchor;
+		cd.transform.localPosition = new Vector3(
+			layout.multiplier.x*layout.discardPile.x, layout.multiplier.y*layout.discardPile.y,-layout.discardPile.layerID);
+		cd.faceUp = true;
+		cd.setSortingLayerName(layout.discardPile.layerName);
+		cd.setSortOrder(0);
+	}
+
+	void updateDrawPile()
+	{
+		CardProspector cd;
+		for(int i=0; i < drawPile.Count; i++)
+		{
+			cd = drawPile[i];
+			cd.transform.parent = layoutAnchor;
+			Vector2 dpStagger = layout.drawPile.stagger;
+			cd.transform.localPosition = new Vector3(layout.multiplier.x*(layout.drawPile.x+i*dpStagger.x),layout.multiplier.y*(layout.drawPile.y+i*dpStagger.y),-layout.drawPile.layerID+0.1f*i);
+			cd.faceUp = false;
+			cd.state = CardState.drawpile;
+			cd.setSortingLayerName(layout.drawPile.layerName);
+			cd.setSortOrder(-1*i);
+		}
+	}
+
 }
