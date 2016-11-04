@@ -151,36 +151,9 @@ public class Deck : MonoBehaviour {
 			card.def = getCardDefinitionByRank(card.rank);
 			foreach(Decorator deco in decorators)
 			{
-				foreach(Decorator pip in card.def.pips)
-				{
-					tGO = Instantiate(prefabSprite) as GameObject;
-					tGO.transform.parent = cgo.transform;
-					tGO.transform.localPosition = pip.loc;
-					if (pip.flip)
-					{
-						tGO.transform.rotation = Quaternion.Euler(0,0,180);
-					}
-					if (pip.scale != 1)
-					{
-						tGO.transform.localScale = Vector3.one*pip.scale;
-					}
-					tGO.name = "pip";
-					tSR = tGO.GetComponent<SpriteRenderer>();
-					tSR.sprite = dictSuits[card.suit];
-					tSR.sortingOrder = 1;
-					card.pipGOs.Add(tGO);
-				}
-				if (card.def.face != "")
-				{
-					tGO = Instantiate (prefabSprite) as GameObject;
-					tSR = tGO.GetComponent<SpriteRenderer>();
-					tS = getFace(card.def.face+card.suit);
-					tSR.sprite = tS;
-					tSR.sortingOrder = 1;
-					tGO.transform.parent = card.transform;
-					tGO.transform.localPosition = Vector3.zero;
-					tGO.name = "face";
-				}
+				
+
+
 				if(deco.type == "suit")
 				{
 					tGO = Instantiate(prefabSprite) as GameObject;
@@ -209,6 +182,48 @@ public class Deck : MonoBehaviour {
 				tGO.name = deco.type;
 				card.decoGOs.Add(tGO);
 			}
+
+			if (card.def.face != null)
+			{
+				tGO = Instantiate (prefabSprite) as GameObject;
+				tSR = tGO.GetComponent<SpriteRenderer>();
+				tS = getFace(card.def.face+card.suit);
+				tSR.sprite = tS;
+				tSR.sortingOrder = 1;
+				tGO.transform.parent = card.transform;
+				tGO.transform.localPosition = Vector3.zero;
+				tGO.name = "face";
+			}
+
+			tGO = Instantiate(prefabSprite) as GameObject;
+			tSR = tGO.GetComponent<SpriteRenderer>();
+			tSR.sprite = cardBack;
+			tGO.transform.parent = card.transform;
+			tGO.transform.localPosition = Vector3.zero;
+			tSR.sortingOrder = 2;
+			tGO.name = "back";
+			card.back = tGO;
+			card.faceUp = false;
+			foreach(Decorator pip in card.def.pips)
+			{
+				tGO = Instantiate(prefabSprite) as GameObject;
+				tGO.transform.parent = cgo.transform;
+				tGO.transform.localPosition = pip.loc;
+				if (pip.flip)
+				{
+					tGO.transform.rotation = Quaternion.Euler(0,0,180);
+				}
+				if (pip.scale != 1)
+				{
+					tGO.transform.localScale = Vector3.one*pip.scale;
+				}
+				tGO.name = "pip";
+				tSR = tGO.GetComponent<SpriteRenderer>();
+				tSR.sprite = dictSuits[card.suit];
+				tSR.sortingOrder = 1;
+				card.pipGOs.Add(tGO);
+			}
+
 			cards.Add(card);
 		}
 	}
