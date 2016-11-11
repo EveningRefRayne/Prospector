@@ -35,7 +35,7 @@ public class Player {
 		float startRot = handSlotDef.rot;
 		if (hand.Count >1)
 		{
-			startRot =+ Bartok.S.handFanDegrees *(hand.Count-1)/2;
+			startRot += Bartok.S.handFanDegrees * (hand.Count-1)/2;
 		}
 		Vector3 pos;
 		float rot;
