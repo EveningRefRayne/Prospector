@@ -21,7 +21,7 @@ GameObject:
   - 4: {fileID: 4000013898695728}
   - 212: {fileID: 212000011682439426}
   - 65: {fileID: 65000010182346556}
-  - 114: {fileID: 114000011210425108}
+  - 114: {fileID: 114000013222564134}
   m_Layer: 0
   m_Name: PrefabCard
   m_TagString: Untagged
@@ -54,7 +54,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.56, y: 3.56, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114000011210425108
+--- !u!114 &114000013222564134
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -76,7 +76,8 @@ MonoBehaviour:
     face: 
     rank: 0
     pips: []
-  state: 0
+  spriteRenderers: []
+  state: 1
   hiddenBy: []
   layoutID: 0
   slotDef:
