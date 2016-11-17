@@ -91,8 +91,8 @@ public class CardBartok : Card {
 				{
 					Vector3 pos = Utils.Bezier (uC, bezierPts);
 					transform.localPosition = pos;
-					//Quaternion rotQ = Utils.Bezier(uC, bezierRots);//This doesn't work because Utils.Bezier is looking for a list of floats, not a list of Quaternions.
-					//transform.rotation = rotQ;
+					Quaternion rotQ = Utils.Bezier(uC, bezierRots);//This doesn't work because Utils.Bezier is looking for a list of floats, not a list of Quaternions.
+					transform.rotation = rotQ;
 				}
 				break;
 		}
