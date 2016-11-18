@@ -90,8 +90,7 @@ public class CardBartok : Card {
 						reportFinishTo.SendMessage ("CBCallback", this);
 						reportFinishTo = null;
 					}
-					else
-					if (callbackPlayer != null)
+					else if (callbackPlayer != null)
 					{
 						callbackPlayer.CBCallback (this);
 						callbackPlayer = null;
