@@ -3,6 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 
 
+
+public enum TurnPhase
+{
+	idle,
+	pre,
+	waiting,
+	post,
+	gameOver
+}
+
+
 public class Bartok : MonoBehaviour {
 	public static Bartok S;
 
@@ -26,11 +37,15 @@ public class Bartok : MonoBehaviour {
 	public int numStartingCards = 7;
 	public float drawTimeStagger = 0.1f;
 
+	public static Player CURRENT_PLAYER;
 
+	public TurnPhase phase = TurnPhase.idle;
+	public GameObject turnLight;
 
 	void Awake()
 	{
 		S = this;
+		turnLight = GameObject.Find ("TurnLight");
 	}
 
 	void Start()
@@ -102,6 +117,7 @@ public class Bartok : MonoBehaviour {
 	public void drawFirstTarget()
 	{
 		CardBartok tCB = moveToTarget(draw());
+		tCB.reportFinishTo = this.gameObject;
 	}
 
 	public CardBartok moveToTarget(CardBartok tCB)
@@ -130,7 +146,7 @@ public class Bartok : MonoBehaviour {
 		return tCB;
 	}
 		
-
+	/*
 	void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -150,6 +166,7 @@ public class Bartok : MonoBehaviour {
 			players [3].addCard (draw ());
 		}
 	}
+	*/
 
 
 	List<CardBartok> upgradeCardsList(List<Card> lCD)
@@ -160,5 +177,76 @@ public class Bartok : MonoBehaviour {
 			lCB.Add(tCD as CardBartok);
 		}
 		return lCB;
+	}
+
+	public void CBCallback(CardBartok cb)
+	{
+		Utils.tr (Utils.RoundToPlaces (Time.time), "Bartok.CBCallback()", cb.name);
+		startGame ();
+	}
+
+	public void startGame()
+	{
+		passTurn (1);
+	}
+
+	public void passTurn(int num= -1)
+	{
+		if (num == -1)
+		{
+			int ndx = players.IndexOf (CURRENT_PLAYER);
+			num = (ndx + 1) % 4;
+		}
+		int lastPlayerNum = -1;
+		if (CURRENT_PLAYER != null)
+		{
+			lastPlayerNum = CURRENT_PLAYER.playerNum;
+		}
+		CURRENT_PLAYER = players [num];
+		phase = TurnPhase.pre;
+		CURRENT_PLAYER.takeTurn ();
+		Vector3 lPos = CURRENT_PLAYER.handSlotDef.pos + Vector3.back * 5;
+		turnLight.transform.position = lPos;
+		Utils.tr (Utils.RoundToPlaces (Time.time), "Bartok.passTurn()", "Old: " + lastPlayerNum, "New: " + CURRENT_PLAYER.playerNum);
+	}
+
+	public bool validPlay(CardBartok cb)
+	{
+		if (cb.rank == targetCard.rank) return(true);
+
+		if (cb.suit == targetCard.suit)
+		{
+			return(true);
+		}
+		return(false);
+	}
+
+	public void cardClicked(CardBartok tCB)
+	{
+		if (CURRENT_PLAYER.type != PlayerType.human) return;
+		if (phase == TurnPhase.waiting) return;
+		switch (tCB.state)
+		{
+			case CBState.drawpile:
+				CardBartok cb = CURRENT_PLAYER.addCard (draw ());
+				cb.callbackPlayer = CURRENT_PLAYER;
+				Utils.tr (Utils.RoundToPlaces (Time.time), "Bartok.cardClicked()", "Draw", cb.name);
+				phase = TurnPhase.waiting;
+				break;
+			case CBState.hand:
+				if (validPlay (tCB))
+				{
+					CURRENT_PLAYER.removeCard (tCB);
+					moveToTarget (tCB);
+					tCB.callbackPlayer = CURRENT_PLAYER;
+					Utils.tr (Utils.RoundToPlaces (Time.time), "Bartok.cardClicked()", "Play", tCB.name, targetCard.name + " is target");
+					phase = TurnPhase.waiting;
+				}
+				else
+				{
+					Utils.tr (Utils.RoundToPlaces (Time.time), "Bartok.cardClicked()", "Attempted to Play", tCB.name, targetCard.name + " is target");
+				}
+				break;
+		}
 	}
 }
