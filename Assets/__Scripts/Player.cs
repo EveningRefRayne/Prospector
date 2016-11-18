@@ -25,6 +25,8 @@ public class Player {
 			cards = cards.OrderBy (cd => cd.rank).ToArray ();
 			hand = new List<CardBartok> (cards);
 		}
+		eCB.setSortingLayerName ("10");
+		eCB.eventualSortLayer = handSlotDef.layerName;
 		fanHand ();
 		return eCB;
 	}
@@ -59,7 +61,9 @@ public class Player {
 			hand[i].transform.rotation = rotQ;
 			hand[i].state = CBState.hand;*/
 			hand[i].faceUp = (type == PlayerType.human);
-			hand[i].setSortOrder(i*4);
+			hand[i].eventualSortOrder = i * 4;
+			//hand[i].setSortOrder(i*4);
+
 		}
 	}
 }

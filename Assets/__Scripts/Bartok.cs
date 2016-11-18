@@ -23,6 +23,10 @@ public class Bartok : MonoBehaviour {
 	public List<Player> players;
 	public CardBartok targetCard;
 
+	public int numStartingCards = 7;
+	public float drawTimeStagger = 0.1f;
+
+
 
 	void Awake()
 	{
@@ -74,6 +78,18 @@ public class Bartok : MonoBehaviour {
 			pl.playerNum = players.Count;
 		}
 		players [0].type = PlayerType.human;
+
+		CardBartok tCB;
+		for (int i = 0; i < numStartingCards; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				tCB = draw ();
+				tCB.timeStart = Time.time + drawTimeStagger * (i * 4 + j);
+				players [(j + 1) % 4].addCard (tCB);
+			}
+		}
+		Invoke ("drawFirstTarget", drawTimeStagger * (numStartingCards * 4 + 4));
 	}
 
 	public CardBartok draw()
@@ -81,6 +97,37 @@ public class Bartok : MonoBehaviour {
 		CardBartok cd = drawPile [0];
 		drawPile.RemoveAt (0);
 		return(cd);
+	}
+
+	public void drawFirstTarget()
+	{
+		CardBartok tCB = moveToTarget(draw());
+	}
+
+	public CardBartok moveToTarget(CardBartok tCB)
+	{
+		tCB.timeStart = 0;
+		tCB.moveTo(layout.discardPile.pos+Vector3.back);
+		tCB.state = CBState.toTarget;
+		tCB.faceUp = true;
+		tCB.setSortingLayerName ("10");
+		tCB.eventualSortLayer = layout.target.layerName;
+		if (targetCard != null)
+		{
+			moveToDiscard (targetCard);
+		}
+		targetCard = tCB;
+		return(tCB);
+	}
+
+	public CardBartok moveToDiscard(CardBartok tCB)
+	{
+		tCB.state = CBState.discard;
+		discardPile.Add (tCB);
+		tCB.setSortingLayerName(layout.discardPile.layerName);
+		tCB.setSortOrder (discardPile.Count * 4);
+		tCB.transform.localPosition = layout.discardPile.pos + Vector3.back / 2;
+		return tCB;
 	}
 		
 

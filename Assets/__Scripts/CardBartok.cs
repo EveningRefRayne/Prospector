@@ -29,6 +29,9 @@ public class CardBartok : Card {
 
 	public GameObject reportFinishTo = null;
 
+	public int eventualSortOrder;
+	public string eventualSortLayer;
+
 	public void moveTo (Vector3 ePos, Quaternion eRot)
 	{
 		bezierPts = new List<Vector3> ();
@@ -67,7 +70,6 @@ public class CardBartok : Card {
 					transform.rotation = bezierRots [0];
 					return;
 				}
-				else
 				if (u >= 1)
 				{
 					uC = 1;
@@ -93,6 +95,14 @@ public class CardBartok : Card {
 					transform.localPosition = pos;
 					Quaternion rotQ = Utils.Bezier(uC, bezierRots);//This doesn't work because Utils.Bezier is looking for a list of floats, not a list of Quaternions.
 					transform.rotation = rotQ;
+					if (u > 0.5f && spriteRenderers[0].sortingOrder != eventualSortOrder)
+					{
+						setSortOrder(eventualSortOrder);
+					}
+					if (u > 0.75f && spriteRenderers[0].sortingLayerName != eventualSortLayer)
+					{
+						setSortingLayerName(eventualSortLayer);
+					}
 				}
 				break;
 		}
