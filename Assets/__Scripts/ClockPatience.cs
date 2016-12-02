@@ -83,8 +83,9 @@ public class ClockPatience : MonoBehaviour {
 					cp.slotDef = tSD;
 					cp.state = CardState2.clock;
 					cp.setSortingLayerName (tSD.layerName);
-					cp.setSortOrder (10);
+					cp.setSortOrder (i*100);
 					clock.Add (cp);
+					if (i == 3) return;
 				}
 			}
 		}
