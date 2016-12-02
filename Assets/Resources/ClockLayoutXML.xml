@@ -12,24 +12,24 @@
 	<!-- hiddenby is the ids of cards that keep a card face-down -->
 	
 	<!-- The Clock Face, 12 stacks -->
-	<slot id="0" x="0" y="6" rot="0" layer="1" faceup="0"/>
-	<slot id="1" x="2"  y="4" rot="30" layer="1" faceup="0"/>
-	<slot id="2" x="4"  y="2" rot="60" layer="1" faceup="0"/>
-	<slot id="3" x="6" y="0" rot="90" layer="1" faceup="0"/>
-	<slot id="4" x="4" y="-2" rot="120" layer="1" faceup="0"/>
-	<slot id="5" x="2" y="-4" rot="150" layer="1" faceup="0"/>
-	<slot id="6" x="0"  y="-6" rot="180" layer="1" faceup="0"/>
-	<slot id="7" x="-2"  y="-4" rot="210" layer="1" faceup="0"/>
-	<slot id="8" x="-4"  y="-2" rot="240" layer="1" faceup="0"/>
-	<slot id="9"  x="-6" y="0" rot="270" layer="1" faceup="0"/>
-	<slot id="10" x="-4" y="2" rot="300" layer="1" faceup="0"/>
-	<slot id="11" x="0" y="4" rot="330" layer="1" faceup="0" />
+	<slot id="0" x="0" y="6" rotate="0" layer="1" faceup="1"/>
+	<slot id="1" x="3"  y="5" rotate="330" layer="1" faceup="1"/>
+	<slot id="2" x="5"  y="3" rotate="300" layer="1" faceup="1"/>
+	<slot id="3" x="6" y="0" rotate="270" layer="1" faceup="1"/>
+	<slot id="4" x="5" y="-3" rotate="240" layer="1" faceup="1"/>
+	<slot id="5" x="3" y="-5" rotate="210" layer="1" faceup="1"/>
+	<slot id="6" x="0"  y="-6" rotate="180" layer="1" faceup="1"/>
+	<slot id="7" x="-3"  y="-5" rotate="150" layer="1" faceup="1"/>
+	<slot id="8" x="-5"  y="-3" rotate="120" layer="1" faceup="1"/>
+	<slot id="9"  x="-6" y="0" rotate="90" layer="1" faceup="1"/>
+	<slot id="10" x="-5" y="3" rotate="60" layer="1" faceup="1"/>
+	<slot id="11" x="-3" y="5" rotate="30" layer="1" faceup="1" />
 	
 	<!-- The draw Pile-->
-	<slot type="drawpile" x="-9" y="-6" layer="2"/>
+	<slot type="drawpile" x="-9" y="-6" rotate="0" layer="2"/>
 	
 	<!-- The drawn kings-->
-	<slot type="kings" x="-4" y="0" xstagger="2" layer="3"/>
+	<slot type="kings" x="-5" y="0" rotate="0" xstagger="2.5" layer="3"/>
 	
 </xml>
 	

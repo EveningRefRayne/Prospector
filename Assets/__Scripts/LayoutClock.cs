@@ -57,7 +57,7 @@ public class LayoutClock : MonoBehaviour {
 			tSD.y = float.Parse(slotsX[i].att("y"));
 			tSD.rot = float.Parse (slotsX [i].att ("rotate"));
 			tSD.layerID = int.Parse(slotsX[i].att("layer"));
-			tSD.layerName = sortingLayerNames[tSD.layerID];
+			tSD.layerName = sortingLayerNames[tSD.layerID-1];
 			switch (tSD.type)
 			{
 				case "slot":

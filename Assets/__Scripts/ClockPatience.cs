@@ -68,14 +68,24 @@ public class ClockPatience : MonoBehaviour {
 			for (int i = 0; i < 4; i++)
 			{
 				cp = draw ();
-				cp.faceUp = tSD.faceUp;
-				cp.transform.parent = layoutAnchor;
-				cp.transform.localPosition = new Vector3 (layout.multiplier.x * tSD.x, layout.multiplier.y * tSD.y, -tSD.layerID*i);
-				cp.layoutID = tSD.id;
-				cp.slotDef = tSD;
-				cp.state = CardState2.clock;
-				cp.setSortingLayerName (tSD.layerName);
-				clock.Add (cp);
+				if (cp.rank == 13)
+				{
+					moveToKings (cp);
+					i--;
+				}
+				else
+				{
+					cp.faceUp = tSD.faceUp;
+					cp.transform.parent = layoutAnchor;
+					cp.transform.localPosition = new Vector3 (layout.multiplier.x * tSD.x, layout.multiplier.y * tSD.y, -tSD.layerID * i);
+					cp.transform.rotation = Quaternion.Euler (0, 0, tSD.rot);
+					cp.layoutID = tSD.id;
+					cp.slotDef = tSD;
+					cp.state = CardState2.clock;
+					cp.setSortingLayerName (tSD.layerName);
+					cp.setSortOrder (10);
+					clock.Add (cp);
+				}
 			}
 		}
 		//moveToTarget(draw());
@@ -115,7 +125,7 @@ public class ClockPatience : MonoBehaviour {
 		cd.state = CardState2.kings;
 		kings.Add(cd);
 		cd.transform.parent = layoutAnchor;
-		cd.transform.localPosition = new Vector3(layout.multiplier.x*layout.kings.x+layout.kings.stagger.x,layout.multiplier.y*layout.kings.y,-layout.kings.layerID+0.5f);
+		cd.transform.localPosition = new Vector3(layout.multiplier.x*layout.kings.x+(layout.kings.stagger.x)*kings.Count,layout.multiplier.y*layout.kings.y,-layout.kings.layerID+0.5f);
 		cd.faceUp = true;
 		cd.setSortingLayerName(layout.kings.layerName);
 		cd.setSortOrder(-1*kings.Count);

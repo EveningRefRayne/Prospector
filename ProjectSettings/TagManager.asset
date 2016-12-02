@@ -41,21 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Row0
+  - name: Clock
     uniqueID: 520969197
     locked: 0
-  - name: Row1
+  - name: Draw
     uniqueID: 2867572171
     locked: 0
-  - name: Row2
+  - name: Kings
     uniqueID: 2900284717
-    locked: 0
-  - name: Row3
-    uniqueID: 456923761
-    locked: 0
-  - name: Discard
-    uniqueID: 3307314019
-    locked: 0
-  - name: Draw
-    uniqueID: 2025116519
     locked: 0
