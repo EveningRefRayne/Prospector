@@ -34,6 +34,7 @@ public class ClockPatience : MonoBehaviour {
 		layout.readLayout(layoutXML.text);
 		drawPile = convertListCardsToListCardClock(deck.cards);
 		layoutGame();
+		Invoke("fixTheDamnSortingOrder",0.01f);
 	}
 	CardClock draw()
 	{
@@ -53,6 +54,15 @@ public class ClockPatience : MonoBehaviour {
 		return null;
 	}
 
+	void fixTheDamnSortingOrder()
+	{
+		int layer = 0;
+		foreach(CardClock cp in clock)
+		{
+			cp.setSortOrder (layer);
+			layer+=5;
+		}
+	}
 
 	void layoutGame()
 	{
@@ -82,15 +92,13 @@ public class ClockPatience : MonoBehaviour {
 					cp.layoutID = tSD.id;
 					cp.slotDef = tSD;
 					cp.state = CardState2.clock;
+					clock.Add (cp);
 					cp.setSortingLayerName (tSD.layerName);
 					cp.setSortOrder (i*100);
-					clock.Add (cp);
-					if (i == 3) return;
 				}
 			}
 		}
-		//moveToTarget(draw());
-		//updateDrawPile();
+		updateDrawPile();
 	}
 
 
@@ -130,10 +138,6 @@ public class ClockPatience : MonoBehaviour {
 		cd.faceUp = true;
 		cd.setSortingLayerName(layout.kings.layerName);
 		cd.setSortOrder(-1*kings.Count);
-	}
-	void moveToTarget(CardProspector cd)
-	{
-		//No logic here, would probably need to get a target, based on the way the particular game works.
 	}
 
 	void updateDrawPile()
